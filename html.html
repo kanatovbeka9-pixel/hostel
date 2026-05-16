@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuxeStay — Поиск и бронирование отелей</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="antialiased">
+
+    <header class="glass-nav fixed top-0 w-full z-50">
+        <div class="container mx-auto px-6 h-20 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-indigo-200">
+                    <i class="fa-solid fa-compass text-xl"></i>
+                </div>
+                <h1 class="text-2xl font-extrabold tracking-tight cursor-pointer" onclick="resetSearch()">
+                    Luxe<span class="text-indigo-600">Stay</span>
+                </h1>
+            </div>
+            
+            <nav class="hidden lg:flex items-center space-x-8 text-sm font-semibold text-slate-600">
+                <a href="#" class="text-indigo-600 border-b-2 border-indigo-600 pb-1">Поиск жилья</a>
+                <a href="#" class="hover:text-indigo-600 transition">Впечатления</a>
+                <a href="#" class="hover:text-indigo-600 transition">Аренда авто</a>
+                <button class="bg-slate-900 text-white px-6 py-2.5 rounded-full hover:bg-indigo-600 transition duration-300 shadow-md">
+                    Войти
+                </button>
+            </nav>
+            
+            <button class="lg:hidden text-slate-800 text-2xl">
+                <i class="fa-solid fa-bars-staggered"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="pt-32 pb-20">
+        <div class="container mx-auto px-6">
+            <div class="max-w-3xl mb-12">
+                <h2 class="text-5xl md:text-6xl font-extrabold leading-tight mb-6">
+                    Найдите свой <span class="gradient-text">идеальный</span> уголок в Кыргызстане
+                </h2>
+                <p class="text-lg text-slate-500 max-w-xl">От уютных горных хижин до роскошных городских апартаментов — бронируйте лучшее жилье в один клик.</p>
+            </div>
+
+            <div class="search-pill bg-white p-3 rounded-2xl md:rounded-full flex flex-col md:flex-row items-center gap-2 max-w-5xl mx-auto border border-slate-100">
+                <div class="flex-1 w-full flex items-center px-6 py-3 border-b md:border-b-0 md:border-r border-slate-100">
+                    <i class="fa-solid fa-location-dot text-indigo-500 mr-4"></i>
+                    <div class="flex flex-col flex-1">
+                        <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Локация</label>
+                        <input type="text" id="searchInput" placeholder="Куда вы направляетесь?" class="bg-transparent outline-none text-slate-800 font-medium placeholder:text-slate-300 w-full">
+                    </div>
+                </div>
+                <div class="flex-1 w-full flex items-center px-6 py-3 border-b md:border-b-0 md:border-r border-slate-100">
+                    <i class="fa-solid fa-calendar-days text-indigo-500 mr-4"></i>
+                    <div class="flex flex-col flex-1">
+                        <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Даты</label>
+                        <span class="text-sm font-medium text-slate-800">12 Июня - 18 Июня</span>
+                    </div>
+                </div>
+                <div class="flex-1 w-full flex items-center px-6 py-3">
+                    <i class="fa-solid fa-user-group text-indigo-500 mr-4"></i>
+                    <div class="flex flex-col flex-1">
+                        <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Гости</label>
+                        <span class="text-sm font-medium text-slate-800">2 взрослых, 1 ребенок</span>
+                    </div>
+                </div>
+                <button onclick="handleSearch()" class="w-full md:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-10 rounded-xl md:rounded-full transition shadow-lg shadow-indigo-200">
+                    Найти
+                </button>
+            </div>
+
+            <section class="mt-20">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-4">
+                    <div>
+                        <h3 id="resultsTitle" class="text-2xl font-bold text-slate-900">Популярные направления</h3>
+                        <p class="text-slate-500">Найдено <span id="hotelCount" class="font-semibold text-indigo-600">0</span> вариантов размещения</p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <label class="text-sm text-slate-400 font-medium">Сортировка:</label>
+                        <select id="sortSelect" onchange="sortHotels()" class="bg-white border-slate-200 border rounded-xl px-4 py-2.5 text-sm font-semibold outline-none focus:ring-2 focus:ring-indigo-100 transition">
+                            <option value="popular">Рекомендуемые</option>
+                            <option value="price-low">Дешевле</option>
+                            <option value="price-high">Дороже</option>
+                            <option value="rating">Лучший рейтинг</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="hotelList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div id="hotelModal" class="fixed inset-0 z-[100] hidden">
+        <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-md" onclick="closeModal()"></div>
+        <div class="relative min-h-screen flex items-center justify-center p-4 md:p-10 pointer-events-none">
+            <div id="modalContent" class="bg-white w-full max-w-5xl rounded-3xl shadow-2xl overflow-hidden relative pointer-events-auto max-h-[90vh] flex flex-col md:flex-row animate-fade-in">
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
